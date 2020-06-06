@@ -5,27 +5,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.erickson.retroxchange.R
+import com.erickson.retroxchange.databinding.HomeFragmentBinding
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-class HomeFragment : Fragment() {
+class HomeFragment : DaggerFragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
+    private lateinit var binding: HomeFragmentBinding
+
+    lateinit var homeViewModel: HomeViewModel
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        AndroidSupportInjection.inject(this)
+
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+
+        val textView: TextView = binding.textHome
+
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
-        return root
+        return binding.root
     }
 }
