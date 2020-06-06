@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.erickson.retroxchange.R
+import dagger.android.support.DaggerFragment
 
-class NotificationsFragment : Fragment() {
+class NotificationsFragment : DaggerFragment() {
 
     private lateinit var notificationsViewModel: NotificationsViewModel
 
