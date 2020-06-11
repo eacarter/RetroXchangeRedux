@@ -3,7 +3,7 @@ Revival of older project done in Java but will be in both Kotlin and React Nativ
 
 Uncomplete Work
 - Base for Kotlin
-  - Implement Dagger
+  X Implement Dagger
   - implement layouts using Constraint views
   - Implement Firebase Auth
   - Implement Location Services
