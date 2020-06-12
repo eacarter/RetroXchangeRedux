@@ -3,9 +3,9 @@ Revival of older project done in Java but will be in both Kotlin and React Nativ
 
 Uncomplete Work
 - Base for Kotlin
-  X Implement Dagger
+  - Implement Dagger X
   - implement layouts using Constraint views
-  - Implement Firebase Auth
+  - Implement Firebase Auth X
   - Implement Location Services
   - Implement Camera/ Gallery usage
   - Implement Firebase Cloud Store
