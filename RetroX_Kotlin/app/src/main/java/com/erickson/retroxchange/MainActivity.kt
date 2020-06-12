@@ -15,9 +15,10 @@ import dagger.android.AndroidInjection
 import dagger.android.DaggerActivity
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
+import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
 
 //    @Inject
 //    internal lateinit var viewModelFactory: ViewModelProvider.Factory

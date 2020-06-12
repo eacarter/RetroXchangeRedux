@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "80282083153",
+    "firebase_url": "https://retroxchangeredux.firebaseio.com",
+    "project_id": "retroxchangeredux",
+    "storage_bucket": "retroxchangeredux.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80282083153:android:d8f76d4f91e9813dec3d70",
+        "android_client_info": {
+          "package_name": "com.erickson.retroxchange"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "80282083153-r6dfta72f5i4vrecfemb87jde89qo3s3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhklvw2K5NXfkAeF8FQRf1YaJ3OTlXCb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "80282083153-r6dfta72f5i4vrecfemb87jde89qo3s3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

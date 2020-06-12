@@ -1,5 +1,7 @@
 package com.erickson.retroxchange.di
 
+import com.erickson.retroxchange.login.signin.SignInFragment
+import com.erickson.retroxchange.login.signup.SignUpFragment
 import com.erickson.retroxchange.ui.dashboard.DashboardFragment
 import com.erickson.retroxchange.ui.home.HomeFragment
 import com.erickson.retroxchange.ui.notifications.NotificationsFragment
@@ -20,4 +22,10 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeNotificationsFragment(): NotificationsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSignInFragment(): SignInFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSignUpFragment(): SignUpFragment
 }
