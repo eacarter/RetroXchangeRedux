@@ -2,6 +2,7 @@ package com.erickson.retroxchange.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.erickson.retroxchange.MainViewModel
 import com.erickson.retroxchange.login.LoginViewModel
 import com.erickson.retroxchange.login.signin.SignInViewModel
 import com.erickson.retroxchange.login.signup.SignUpViewModel
@@ -47,4 +48,9 @@ internal abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SignUpViewModel::class)
     protected abstract fun signUpViewModel(signUpViewModel: SignUpViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    protected abstract fun mainViewModel(mainViewModel: MainViewModel): ViewModel
 }

@@ -53,17 +53,20 @@ class SignUpFragment : Fragment() {
 
 
         binding.loginSubmit.setOnClickListener {
-            context?.let { it1 ->
-                viewModel.createAccount(binding.loginEmail.text.toString().trim(), binding.loginPass.text.toString().trim(),
-                    it1
-                )
-            }
-
-            viewModel.getUserInfo()!!.observe(this, Observer {
-                if(it != null){
-                    startActivity(Intent(context, MainActivity::class.java))
+            if(!binding.loginEmail.text.isEmpty() || !binding.loginPass.text.isEmpty()) {
+                context?.let { it1 ->
+                    viewModel.createAccount(
+                        binding.loginEmail.text.toString().trim(),
+                        binding.loginPass.text.toString().trim(),
+                        it1
+                    )
                 }
-            });
+                viewModel.getUserInfo()!!.observe(this, Observer {
+                    if (it != null) {
+                        startActivity(Intent(context, MainActivity::class.java))
+                    }
+                });
+            }
         }
 
         binding.loginSignin.setOnClickListener {

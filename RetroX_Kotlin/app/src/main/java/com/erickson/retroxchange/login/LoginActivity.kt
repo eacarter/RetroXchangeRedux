@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.erickson.retroxchange.MainActivity
@@ -47,6 +48,12 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
             .beginTransaction()
             .replace(R.id.login_content_view, SignInFragment(), "SignIn")
             .commit()
+
+        loginViewModel.getUserInfo()?.observe(this, Observer {
+            if(it != null){
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+        });
 
     }
 }
