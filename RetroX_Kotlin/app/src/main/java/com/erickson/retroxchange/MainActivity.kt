@@ -1,15 +1,20 @@
 package com.erickson.retroxchange
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.erickson.retroxchange.login.LoginActivity
+import com.erickson.retroxchange.login.LoginViewModel
 import dagger.android.AndroidInjection
 //import dagger.databinding.MainActivityBinding
 import dagger.android.DaggerActivity
@@ -20,11 +25,11 @@ import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
 
-//    @Inject
-//    internal lateinit var viewModelFactory: ViewModelProvider.Factory
-//
-//
-//    private lateinit var binding: MainActivityBinding
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var mainViewModel: MainViewModel
+
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -49,5 +54,17 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+
+
+        mainViewModel.getUserInfo()?.observe(this, Observer {
+            if(it != null){
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+            else{
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+        });
     }
 }
