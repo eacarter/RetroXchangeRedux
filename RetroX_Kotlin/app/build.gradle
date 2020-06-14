@@ -60,7 +60,7 @@ dependencies {
 
     /* Android Architecture Component - LiveData & ViewModel  */
     implementation 'android.arch.lifecycle:extensions:1.1.1'
-
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
     implementation 'com.google.firebase:firebase-auth-ktx:19.3.1'
 
 

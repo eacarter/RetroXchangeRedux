@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.ktx.Firebase
 import javax.inject.Inject
 
-class UserManager @Inject constructor(){
+class UserManager @Inject constructor(var databaseManager: DatabaseManager){
     private val user = MediatorLiveData<FirebaseUser>()
 
     private val auth: FirebaseAuth by lazy {
@@ -34,6 +34,7 @@ class UserManager @Inject constructor(){
             .addOnCompleteListener(Activity()) { task ->
                 if (task.isSuccessful && task.isComplete) {
                     user.postValue(auth.currentUser)
+                    databaseManager.initializeUser(auth, context)
                 } else {
                     Log.d("UserManager", "failed" )
                     Toast.makeText(context, task.exception.toString(),

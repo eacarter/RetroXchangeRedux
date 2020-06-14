@@ -28,7 +28,7 @@ class HomeFragment : DaggerFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         AndroidSupportInjection.inject(this)
 
-        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
         val textView: TextView = binding.textHome
@@ -36,6 +36,11 @@ class HomeFragment : DaggerFragment() {
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+
+        binding.textHome.setOnClickListener {
+            homeViewModel.signOut()
+        }
+
         return binding.root
     }
 }

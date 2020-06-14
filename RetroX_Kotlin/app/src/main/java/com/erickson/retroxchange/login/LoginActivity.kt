@@ -49,11 +49,4 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
             .commit()
 
     }
-
-    override fun onStart() {
-        super.onStart()
-        if(loginViewModel.userInfo() != null){
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-    }
 }

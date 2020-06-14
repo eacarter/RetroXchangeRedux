@@ -52,6 +52,8 @@ class SignInFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SignInViewModel::class.java)
 
+        TODO("Add check for empty and incorrect strings")
+        TODO("Fix 'Invalid Input' for sign in")
         binding.loginSubmit.setOnClickListener {
             context?.let { it1 ->
                 viewModel.loginAccount(binding.loginEmail.text.toString().trim(), binding.loginPass.text.toString().trim(),
