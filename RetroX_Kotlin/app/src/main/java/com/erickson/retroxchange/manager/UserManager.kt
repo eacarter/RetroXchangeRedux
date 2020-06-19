@@ -27,6 +27,7 @@ class UserManager @Inject constructor(var databaseManager: DatabaseManager){
 
     fun signOut(){
         auth.signOut()
+        user.value = null
     }
 
     fun createAccount(email: String, password:String, context: Context){
