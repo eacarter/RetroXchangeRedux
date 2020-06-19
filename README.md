@@ -11,7 +11,8 @@ Uncomplete Work
   - Implement Location Services
   - Implement Camera/ Gallery usage
   - Implement Firebase Cloud Store X
-  - implement Expresso test
+  - Implement Expresso test
+  - Implement Google ads
   
 - Base for React Native
   - Same as above, currently learning. will update as needed
