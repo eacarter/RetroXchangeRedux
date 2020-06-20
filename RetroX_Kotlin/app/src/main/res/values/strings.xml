@@ -9,4 +9,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_notification_channel_id">default_notification_channel_id</string>
     <string name="fcm_message">nothing yet</string>
+    <string name="friends_label">Friends</string>
+    <string name="portfolio_label">Portfolio</string>
+    <string name="discussion_label">Discussion</string>
 </resources>
