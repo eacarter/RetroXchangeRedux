@@ -1,9 +1,12 @@
 package com.erickson.retroxchange
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -81,4 +84,5 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
         });
 
     }
+
 }
