@@ -13,6 +13,7 @@ Uncomplete Work
   - Implement Firebase Cloud Store X
   - Implement Expresso test
   - Implement Google ads
+  - Implement Notifications
   
 - Base for React Native
   - Same as above, currently learning. will update as needed
