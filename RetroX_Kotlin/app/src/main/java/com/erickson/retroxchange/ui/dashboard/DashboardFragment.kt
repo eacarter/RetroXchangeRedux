@@ -14,27 +14,29 @@ import com.erickson.retroxchange.R
 import com.erickson.retroxchange.databinding.DashboardFragmentBinding
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 class DashboardFragment : DaggerFragment() {
 
+    @Inject
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var binding: DashboardFragmentBinding
 
     lateinit var dashboardViewModel: DashboardViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        AndroidSupportInjection.inject(this)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        AndroidSupportInjection.inject(this)
 
-        dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel::class.java)
+        dashboardViewModel = ViewModelProviders.of(this, viewModelFactory).get(DashboardViewModel::class.java)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
-        val textView: TextView = binding.textDashboard
 
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
         return binding.root
     }
 }

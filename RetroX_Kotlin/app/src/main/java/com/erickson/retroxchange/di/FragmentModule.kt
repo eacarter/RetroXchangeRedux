@@ -5,6 +5,7 @@ import com.erickson.retroxchange.login.signup.SignUpFragment
 import com.erickson.retroxchange.ui.dashboard.DashboardFragment
 import com.erickson.retroxchange.ui.home.HomeFragment
 import com.erickson.retroxchange.ui.notifications.NotificationsFragment
+import com.erickson.retroxchange.ui.profile.ProfileFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -28,4 +29,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSignUpFragment(): SignUpFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeProfileFragment(): ProfileFragment
 }

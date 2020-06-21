@@ -3,12 +3,10 @@ package com.erickson.retroxchange.ui.dashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.erickson.retroxchange.manager.DatabaseManager
 import javax.inject.Inject
 
-class DashboardViewModel @Inject constructor(): ViewModel() {
+class DashboardViewModel @Inject constructor(databaseManager: DatabaseManager): ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
-    }
-    val text: LiveData<String> = _text
+
 }

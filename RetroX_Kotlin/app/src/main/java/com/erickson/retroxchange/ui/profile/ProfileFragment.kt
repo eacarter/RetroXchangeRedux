@@ -1,60 +1,108 @@
 package com.erickson.retroxchange.ui.profile
 
+import android.app.Activity
+import android.content.ContentResolver
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.FileProvider
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.erickson.retroxchange.R
+import com.erickson.retroxchange.databinding.ProfileFragmentBinding
+import com.erickson.retroxchange.manager.CameraManager
+import com.erickson.retroxchange.ui.notifications.NotificationsViewModel
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.fragment_profile.*
+import java.io.File
+import java.io.IOException
+import java.nio.file.Files.createFile
+import java.text.SimpleDateFormat
+import java.util.*
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class ProfileFragment : DaggerFragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val CHOOSE_IMAGE_REQUEST = 1
+    private val REQUEST_IMAGE_CAPTURE = 2
+    private var imageBitmap: Bitmap? = null
+    private var mCurrentPhotoPath: String? = null
+
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var binding: ProfileFragmentBinding
+
+    lateinit var profileViewModel: ProfileViewModel
+
+    private val cameraManager: CameraManager = CameraManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        AndroidSupportInjection.inject(this)
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+
+        profileViewModel = ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java)
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+
+        binding.profileImage.setOnClickListener {
+           // chooseImage(it)
+//            startActivityForResult(cameraManager.chooseImage(it), CHOOSE_IMAGE_REQUEST)
+            startActivityForResult(cameraManager.takePicture(context!!), REQUEST_IMAGE_CAPTURE)
+        }
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == CHOOSE_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null){
+            val bitmap = tryReadBitmap(data.data!!)
+            bitmap?.let {
+                imageBitmap = bitmap
+                profile_image.setImageBitmap(bitmap)
+
+                //TODO add database code
             }
+        }
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
+//            val auxFile = File(mCurrentPhotoPath)
+            var bitmap :Bitmap = BitmapFactory.decodeFile(cameraManager.getFilePath().value)
+                profile_image.setImageBitmap(bitmap)
+
+            //TODO add database code
+
+        }
+    }
+
+    private fun tryReadBitmap(data: Uri): Bitmap? {
+        return try {
+            MediaStore.Images.Media.getBitmap(context?.contentResolver, data)
+        }
+        catch (e: IOException){
+            e.printStackTrace()
+            null
+        }
     }
 }

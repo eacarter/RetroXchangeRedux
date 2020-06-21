@@ -9,6 +9,7 @@ import com.erickson.retroxchange.login.signup.SignUpViewModel
 import com.erickson.retroxchange.ui.dashboard.DashboardViewModel
 import com.erickson.retroxchange.ui.home.HomeViewModel
 import com.erickson.retroxchange.ui.notifications.NotificationsViewModel
+import com.erickson.retroxchange.ui.profile.ProfileViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -48,6 +49,11 @@ internal abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SignUpViewModel::class)
     protected abstract fun signUpViewModel(signUpViewModel: SignUpViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewModel::class)
+    protected abstract fun profileViewModel(profileViewModel: ProfileViewModel): ViewModel
 
     @Binds
     @IntoMap
