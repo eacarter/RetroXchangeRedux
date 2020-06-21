@@ -20,8 +20,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.erickson.retroxchange.R
-import com.erickson.retroxchange.databinding.NotificationsFragmentBinding
 import com.erickson.retroxchange.databinding.ProfileFragmentBinding
+import com.erickson.retroxchange.manager.CameraManager
 import com.erickson.retroxchange.ui.notifications.NotificationsViewModel
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
@@ -47,6 +47,8 @@ class ProfileFragment : DaggerFragment() {
 
     lateinit var profileViewModel: ProfileViewModel
 
+    private val cameraManager: CameraManager = CameraManager()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
@@ -64,19 +66,11 @@ class ProfileFragment : DaggerFragment() {
 
         binding.profileImage.setOnClickListener {
            // chooseImage(it)
-            takePicture()
+//            startActivityForResult(cameraManager.chooseImage(it), CHOOSE_IMAGE_REQUEST)
+            startActivityForResult(cameraManager.takePicture(context!!), REQUEST_IMAGE_CAPTURE)
         }
 
         return binding.root
-    }
-
-    fun chooseImage(view: View) {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-
-        var chooser = Intent.createChooser(intent, "Choose image for item")
-        startActivityForResult(chooser, CHOOSE_IMAGE_REQUEST)
     }
 
 
@@ -88,13 +82,17 @@ class ProfileFragment : DaggerFragment() {
             bitmap?.let {
                 imageBitmap = bitmap
                 profile_image.setImageBitmap(bitmap)
+
+                //TODO add database code
             }
         }
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
-            val auxFile = File(mCurrentPhotoPath)
-            var bitmap :Bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
+//            val auxFile = File(mCurrentPhotoPath)
+            var bitmap :Bitmap = BitmapFactory.decodeFile(cameraManager.getFilePath().value)
+                profile_image.setImageBitmap(bitmap)
 
-            profile_image.setImageBitmap(bitmap)
+            //TODO add database code
+
         }
     }
 
@@ -105,32 +103,6 @@ class ProfileFragment : DaggerFragment() {
         catch (e: IOException){
             e.printStackTrace()
             null
-        }
-    }
-
-    private fun takePicture() {
-
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val file: File = createFile()
-
-        val uri: Uri = FileProvider.getUriForFile(
-            context!!,
-            "com.retroXchange.android.fileprovider",
-            file
-        )
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,uri)
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-    }
-
-    private fun createFile(): File {
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = context!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_",
-            ".jpg",
-            storageDir
-        ).apply {
-            mCurrentPhotoPath = absolutePath
         }
     }
 }

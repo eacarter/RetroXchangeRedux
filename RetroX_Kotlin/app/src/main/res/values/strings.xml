@@ -12,4 +12,5 @@
     <string name="friends_label">Friends</string>
     <string name="portfolio_label">Portfolio</string>
     <string name="discussion_label">Discussion</string>
+    <string name="search_discussion_post">Search Discussion Post</string>
 </resources>
