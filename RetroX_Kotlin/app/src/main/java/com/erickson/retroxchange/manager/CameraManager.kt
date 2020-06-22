@@ -66,15 +66,15 @@ class CameraManager  constructor(){
         }
     }
 
-//    private fun tryReadBitmap(data: Uri, context: Context): Bitmap? {
-//        return try {
-//            MediaStore.Images.Media.getBitmap(context.contentResolver, data)
-//        }
-//        catch (e: IOException){
-//            e.printStackTrace()
-//            null
-//        }
-//    }
+    fun tryReadBitmap(data: Uri, context: Context): Bitmap? {
+        return try {
+            MediaStore.Images.Media.getBitmap(context.contentResolver, data)
+        }
+        catch (e: IOException){
+            e.printStackTrace()
+            null
+        }
+    }
 
 
 }

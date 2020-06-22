@@ -66,6 +66,9 @@ class ProfileFragment : DaggerFragment() {
 
         binding.profileImage.setOnClickListener {
            // chooseImage(it)
+
+            //TODO add choice dialog
+
 //            startActivityForResult(cameraManager.chooseImage(it), CHOOSE_IMAGE_REQUEST)
             startActivityForResult(cameraManager.takePicture(context!!), REQUEST_IMAGE_CAPTURE)
         }
@@ -78,7 +81,7 @@ class ProfileFragment : DaggerFragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == CHOOSE_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null){
-            val bitmap = tryReadBitmap(data.data!!)
+            val bitmap = cameraManager.tryReadBitmap(data.data!!, context!!)
             bitmap?.let {
                 imageBitmap = bitmap
                 profile_image.setImageBitmap(bitmap)
@@ -93,16 +96,6 @@ class ProfileFragment : DaggerFragment() {
 
             //TODO add database code
 
-        }
-    }
-
-    private fun tryReadBitmap(data: Uri): Bitmap? {
-        return try {
-            MediaStore.Images.Media.getBitmap(context?.contentResolver, data)
-        }
-        catch (e: IOException){
-            e.printStackTrace()
-            null
         }
     }
 }
