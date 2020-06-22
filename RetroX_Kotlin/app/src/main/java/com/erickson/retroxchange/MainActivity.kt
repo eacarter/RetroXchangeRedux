@@ -22,6 +22,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.erickson.retroxchange.login.LoginActivity
 import com.erickson.retroxchange.login.LoginViewModel
+import com.google.android.gms.ads.MobileAds
 import dagger.android.AndroidInjection
 //import dagger.databinding.MainActivityBinding
 import dagger.android.DaggerActivity
@@ -74,6 +75,8 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
         fun requestPermission(){
             ActivityCompat.requestPermissions(this, permissions,0)
         }
+
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713")
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
