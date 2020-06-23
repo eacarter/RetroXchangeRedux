@@ -14,7 +14,7 @@
             android:id="@+id/discussion_search"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            android:layout_margin="20dp"
             android:hint="@string/search_discussion_post"
             app:layout_constraintHeight_percent=".07"
             app:layout_constraintStart_toStartOf="parent"

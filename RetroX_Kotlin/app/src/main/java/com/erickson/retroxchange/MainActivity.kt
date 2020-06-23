@@ -4,7 +4,9 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,6 +25,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.erickson.retroxchange.login.LoginActivity
 import com.erickson.retroxchange.login.LoginViewModel
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
 import dagger.android.AndroidInjection
 //import dagger.databinding.MainActivityBinding
 import dagger.android.DaggerActivity
@@ -37,6 +42,8 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var mainViewModel: MainViewModel
+
+    lateinit var mFusedLocationClient: FusedLocationProviderClient
 
 
     @Inject
@@ -63,13 +70,19 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val permissions = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        val permissions = arrayOf(android.Manifest.permission.CAMERA,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION)
 
         fun hasNoPermissions(): Boolean{
             return ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
         }
 
         fun requestPermission(){
@@ -77,6 +90,30 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
         }
 
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713")
+
+//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+//
+//        mFusedLocationClient.lastLocation.addOnCompleteListener { task ->
+//            var location: Location? = null
+//            if(location == null){
+//                var mLocationRequest = LocationRequest()
+//                mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+//                mLocationRequest.interval = 0
+//                mLocationRequest.fastestInterval = 0
+//                mLocationRequest.numUpdates = 1
+//
+//                mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+//                mFusedLocationClient!!.requestLocationUpdates(
+//                    mLocationRequest, null,
+//                    Looper.myLooper()
+//                )
+//            }
+//            else{
+//                location.longitude.toString()
+//                location.latitude.toString()
+//            }
+//        }
+
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
