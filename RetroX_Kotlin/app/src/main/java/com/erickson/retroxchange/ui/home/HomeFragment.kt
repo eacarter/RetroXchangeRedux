@@ -12,6 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.erickson.retroxchange.R
 import com.erickson.retroxchange.databinding.HomeFragmentBinding
+import com.jjoe64.graphview.GridLabelRenderer
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -31,15 +34,25 @@ class HomeFragment : DaggerFragment() {
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
-        val textView: TextView = binding.textHome
+        //Fake data until real data added
+        val list: Array<DataPoint> = arrayOf(
+            DataPoint(0.0, 1.0),
+            DataPoint(1.0, 5.0),
+            DataPoint(2.0, 3.0),
+            DataPoint(3.0, 2.0),
+            DataPoint(4.0, 6.0)
+        )
 
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+        var series : LineGraphSeries<DataPoint> = LineGraphSeries<DataPoint>(list)
 
-        binding.textHome.setOnClickListener {
-            homeViewModel.signOut()
+        binding.homeGraph.let {
+            it.addSeries(series)
+            it.gridLabelRenderer.gridColor = R.color.colorPrimaryDark
+            it.gridLabelRenderer.gridStyle = GridLabelRenderer.GridStyle.NONE
+            it.gridLabelRenderer.isHorizontalLabelsVisible = false
+            it.gridLabelRenderer.isVerticalLabelsVisible = false
         }
+
 
         return binding.root
     }

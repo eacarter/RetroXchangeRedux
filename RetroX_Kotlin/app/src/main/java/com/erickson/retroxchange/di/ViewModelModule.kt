@@ -6,6 +6,7 @@ import com.erickson.retroxchange.MainViewModel
 import com.erickson.retroxchange.login.LoginViewModel
 import com.erickson.retroxchange.login.signin.SignInViewModel
 import com.erickson.retroxchange.login.signup.SignUpViewModel
+import com.erickson.retroxchange.ui.dashboard.DashboardItemViewModel
 import com.erickson.retroxchange.ui.dashboard.DashboardViewModel
 import com.erickson.retroxchange.ui.home.HomeViewModel
 import com.erickson.retroxchange.ui.notifications.NotificationsViewModel
@@ -24,6 +25,11 @@ internal abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DashboardViewModel::class)
     protected abstract fun dashboardViewModel(dashboardViewModel: DashboardViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DashboardItemViewModel::class)
+    protected abstract fun dashboardItemViewModel(dashboardItemViewModel: DashboardItemViewModel): ViewModel
 
     @Binds
     @IntoMap

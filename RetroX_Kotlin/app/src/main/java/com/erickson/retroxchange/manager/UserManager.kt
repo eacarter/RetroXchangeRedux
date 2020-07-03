@@ -20,7 +20,7 @@ class UserManager @Inject constructor(var databaseManager: DatabaseManager){
         FirebaseAuth.getInstance()
     }
 
-    fun getUserData(): LiveData<FirebaseUser>?{
+    fun getUserData(): LiveData<FirebaseUser>{
         user.value = auth.currentUser
         return user
     }
