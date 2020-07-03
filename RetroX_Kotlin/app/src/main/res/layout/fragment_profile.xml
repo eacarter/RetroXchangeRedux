@@ -21,6 +21,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+
+        <TextView
+            android:id="@+id/photo_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="Gallery"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:textColor="@android:color/white"
+            android:background="@drawable/pill_bg"
+            app:layout_constraintStart_toEndOf="@id/profile_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/profile_image"/>
+
+        <TextView
+            android:id="@+id/photo_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="Camera"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:textColor="@android:color/white"
+            android:background="@drawable/pill_bg"
+            app:layout_constraintStart_toEndOf="@id/profile_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/profile_image"/>
+
         <TextView
             android:id="@+id/profile_name"
             android:text="User Name"

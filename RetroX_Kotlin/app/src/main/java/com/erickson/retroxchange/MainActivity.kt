@@ -2,6 +2,7 @@ package com.erickson.retroxchange
 
 import android.Manifest
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -9,10 +10,13 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -22,8 +26,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.erickson.retroxchange.databinding.HomeFragmentBinding
+import com.erickson.retroxchange.databinding.MainActivityBinding
+import com.erickson.retroxchange.datamodels.DiscussionData
 import com.erickson.retroxchange.login.LoginActivity
 import com.erickson.retroxchange.login.LoginViewModel
+import com.erickson.retroxchange.manager.DatabaseManager
+import com.erickson.retroxchange.manager.UserManager
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
@@ -34,7 +43,13 @@ import dagger.android.DaggerActivity
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.StringBuilder
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
 
@@ -43,7 +58,17 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
 
     private lateinit var mainViewModel: MainViewModel
 
+    private lateinit var binding: MainActivityBinding
+
+    @Inject
+    lateinit var userManager: UserManager
+
+    @Inject
+    lateinit var databaseManager: DatabaseManager
+
     lateinit var mFusedLocationClient: FusedLocationProviderClient
+
+    private var isOpen : Boolean = false
 
 
     @Inject
@@ -58,8 +83,11 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
         AndroidInjection.inject(this)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+
+        val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
@@ -89,7 +117,7 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
             ActivityCompat.requestPermissions(this, permissions,0)
         }
 
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713")
+        MobileAds.initialize(this)
 
 //        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 //
@@ -114,6 +142,64 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
 //            }
 //        }
 
+        binding.fabDiscussion.setOnClickListener ( View.OnClickListener {
+
+            val dialogBuilder = AlertDialog.Builder(this)
+
+            val layout = layoutInflater.inflate(R.layout.dialog_discussion, null)
+
+            dialogBuilder.setView(layout)
+
+            dialogBuilder.setTitle("Create new discussion post")
+
+            val title : EditText = layout.findViewById<EditText>(R.id.discussion_title)
+            val text : EditText = layout.findViewById<EditText>(R.id.discussion_text)
+
+            dialogBuilder.setPositiveButton("Create", DialogInterface.OnClickListener { dialog, which ->
+
+                userManager.getUserData().observe(
+                    this,
+                    Observer { it1 ->
+                        var id = it1.uid + randomize()
+
+                        var discussionData = DiscussionData(
+                            id,
+                            it1.uid,
+                            it1.email!!.substringBefore('@', ""),
+                            title.text.toString(),
+                            text.text.toString(),
+                            "",
+                            SimpleDateFormat("MM/dd/yyyy").format(Date()),
+                            arrayListOf(),
+                            arrayListOf()
+                        )
+                        databaseManager.uploadDiscussionFeed(id, discussionData)
+                    })
+                }
+            )
+
+            dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener {dialog, which ->
+               dialog.cancel()
+            })
+
+            dialogBuilder.create().show()
+            binding.fabDiscussion.visibility = View.GONE
+            binding.fabItem.visibility = View.GONE
+            isOpen = false
+        })
+
+        binding.addFab.setOnClickListener( View.OnClickListener {
+            if(isOpen){
+                binding.fabDiscussion.visibility = View.GONE
+                binding.fabItem.visibility = View.GONE
+                isOpen = false
+            }
+            else{
+                binding.fabDiscussion.visibility = View.VISIBLE
+                binding.fabItem.visibility = View.VISIBLE
+                isOpen = true
+            }
+        })
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
@@ -123,6 +209,19 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
             }
         });
 
+
+    }
+
+    fun randomize() : String{
+
+        var idAppend = StringBuilder()
+
+        for(i in 1..15){
+           var pos: Char = ('a'..'z' - 1).random()
+            idAppend.append(pos)
+        }
+
+        return idAppend.toString()
     }
 
 }
