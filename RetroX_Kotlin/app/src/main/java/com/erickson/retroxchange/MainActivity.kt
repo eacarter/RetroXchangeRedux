@@ -170,7 +170,7 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
                             text.text.toString(),
                             "",
                             SimpleDateFormat("MM/dd/yyyy").format(Date()),
-                            arrayListOf(),
+                            arrayListOf(it1.uid),
                             arrayListOf()
                         )
                         databaseManager.uploadDiscussionFeed(id, discussionData)

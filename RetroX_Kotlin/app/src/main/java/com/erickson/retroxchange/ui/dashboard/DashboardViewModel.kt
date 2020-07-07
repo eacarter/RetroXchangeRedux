@@ -13,5 +13,12 @@ class DashboardViewModel @Inject constructor(val databaseManager: DatabaseManage
        return databaseManager.getDiscussionfeed()
     }
 
+    fun updateCount(id:String, userId: String){
+        databaseManager.updateDiscussionCount(id, userId)
+    }
+
+    fun removeCount(id:String, userId: String){
+        databaseManager.removeDiscussionCount(id, userId)
+    }
 
 }

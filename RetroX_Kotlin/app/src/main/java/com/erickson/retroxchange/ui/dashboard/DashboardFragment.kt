@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.erickson.retroxchange.R
 import com.erickson.retroxchange.adapter.DiscussionAdapter
 import com.erickson.retroxchange.databinding.DashboardFragmentBinding
+import com.erickson.retroxchange.manager.DatabaseManager
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_dashboard.*
@@ -29,7 +30,10 @@ class DashboardFragment : DaggerFragment() {
 
     private lateinit var binding: DashboardFragmentBinding
 
-    lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var dashboardViewModel: DashboardViewModel
+
+    @Inject
+    lateinit var databaseManager: DatabaseManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +62,7 @@ class DashboardFragment : DaggerFragment() {
             with(discussion_list){
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(inflater.context)
-                adapter = DiscussionAdapter(lifecycleOwner,activity as AppCompatActivity, it)
+                adapter = DiscussionAdapter(lifecycleOwner,activity as AppCompatActivity, it, databaseManager)
             }
         })
     }

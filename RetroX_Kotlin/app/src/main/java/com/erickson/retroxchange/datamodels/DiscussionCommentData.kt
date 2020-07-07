@@ -5,5 +5,6 @@ data class DiscussionCommentData(
     val userId: String = "",
     val userName: String = "",
     val text: String = "",
-    val timeStamp: String = ""
+    val timeStamp: String = "",
+    val starredUsers: ArrayList<String> = arrayListOf()
 )

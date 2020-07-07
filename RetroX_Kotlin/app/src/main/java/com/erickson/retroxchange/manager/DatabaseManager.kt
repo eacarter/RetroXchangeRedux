@@ -25,8 +25,9 @@ class DatabaseManager @Inject constructor(){
     private val storage: FirebaseStorage by lazy{
         FirebaseStorage.getInstance()
     }
+    private val postId: MediatorLiveData<String> = MediatorLiveData()
 
-    fun initializeUser(firebaseAuth: FirebaseAuth, context: Context){
+    fun initializeUser(firebaseAuth: FirebaseAuth){
        val map = mutableMapOf(
            "id" to "",
            "username" to firebaseAuth.currentUser!!.email!!.substringBefore('@'),
@@ -227,6 +228,42 @@ class DatabaseManager @Inject constructor(){
             }
         return feed
     }
+    
+    fun updateDiscussionCount(id: String, userID: String){
+        data.collection("Discussions").document(id).update("starredUsers", FieldValue.arrayUnion(userID)).
+                addOnCompleteListener {task ->
+                    if(task.isSuccessful){
+                        Log.d("Database", "updated count")
+                    }
+                }
+    }
+
+    fun removeDiscussionCount(id: String, userID: String){
+        data.collection("Discussions").document(id).update("starredUsers", FieldValue.arrayRemove(userID)).
+        addOnCompleteListener {task ->
+            if(task.isSuccessful){
+                Log.d("Database", "updated count")
+            }
+        }
+    }
+
+//    fun updateDiscussionCommentCount(id: String, userID: String){
+//        data.collection("Discussions").document(id).collection("Comments")..update("starredUsers", FieldValue.arrayUnion(userID)).
+//        addOnCompleteListener {task ->
+//            if(task.isSuccessful){
+//                Log.d("Database", "updated count")
+//            }
+//        }
+//    }
+//
+//    fun removeDiscussionCommentCount(id: String, userID: String){
+//        data.collection("Discussions").document(id).update("starredUsers", FieldValue.arrayRemove(userID)).
+//        addOnCompleteListener {task ->
+//            if(task.isSuccessful){
+//                Log.d("Database", "updated count")
+//            }
+//        }
+//    }
 
     fun getItem(){
 
