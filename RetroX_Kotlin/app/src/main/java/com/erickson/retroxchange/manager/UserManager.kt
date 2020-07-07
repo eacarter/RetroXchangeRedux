@@ -35,7 +35,7 @@ class UserManager @Inject constructor(var databaseManager: DatabaseManager){
             .addOnCompleteListener(Activity()) { task ->
                 if (task.isSuccessful && task.isComplete) {
                     user.postValue(auth.currentUser)
-                    databaseManager.initializeUser(auth, context)
+                    databaseManager.initializeUser(auth)
                 } else {
                     Log.d("UserManager", "failed" )
                     Toast.makeText(context, task.exception.toString(),

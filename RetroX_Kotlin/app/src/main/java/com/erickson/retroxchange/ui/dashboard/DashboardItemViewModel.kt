@@ -32,4 +32,12 @@ class DashboardItemViewModel @Inject constructor(val databaseManager: DatabaseMa
     fun getDiscussionSpecific(id:String): LiveData<DiscussionData>{
         return databaseManager.getDiscussionSpecific(id)
     }
+
+    fun updateCount(id:String, userId: String){
+        databaseManager.updateDiscussionCount(id, userId)
+    }
+
+    fun removeCount(id:String, userId: String){
+        databaseManager.removeDiscussionCount(id, userId)
+    }
 }

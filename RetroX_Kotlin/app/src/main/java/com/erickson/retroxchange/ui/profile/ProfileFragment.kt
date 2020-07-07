@@ -28,6 +28,7 @@ import com.erickson.retroxchange.adapter.DiscussionAdapter
 import com.erickson.retroxchange.databinding.ProfileFragmentBinding
 import com.erickson.retroxchange.datamodels.DiscussionData
 import com.erickson.retroxchange.manager.CameraManager
+import com.erickson.retroxchange.manager.DatabaseManager
 import com.erickson.retroxchange.ui.notifications.NotificationsViewModel
 import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
@@ -60,6 +61,9 @@ class ProfileFragment : DaggerFragment() {
     lateinit var profileViewModel: ProfileViewModel
 
     private val cameraManager: CameraManager = CameraManager()
+
+    @Inject
+    lateinit var databaseManager:DatabaseManager
 
     private var visible: Boolean = false
 
@@ -111,7 +115,7 @@ class ProfileFragment : DaggerFragment() {
                 with(profile_discussion_list){
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(inflater.context)
-                    adapter = DiscussionAdapter(lifecycleOwner, activity as AppCompatActivity,  it)
+                    adapter = DiscussionAdapter(lifecycleOwner, activity as AppCompatActivity,  it, databaseManager)
                 }
             })
         })

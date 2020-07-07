@@ -8,6 +8,6 @@ data class DiscussionData(
     val message: String = "",
     val messageImage: String = "",
     val timeStamp: String = "",
-    val comments: ArrayList<String> = arrayListOf(),
+    val starredUsers: ArrayList<String> = arrayListOf(),
     val tags: ArrayList<String> = arrayListOf()
 )

@@ -11,12 +11,16 @@ import com.erickson.retroxchange.R
 import com.erickson.retroxchange.datamodels.DiscussionCommentData
 import com.erickson.retroxchange.manager.DatabaseManager
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.discussion_comment_singlecard.view.*
 import kotlinx.android.synthetic.main.discussion_singlecard.view.*
+import kotlinx.android.synthetic.main.discussion_singlecard.view.discussion_count
+import kotlinx.android.synthetic.main.discussion_singlecard.view.discussion_post_date
+import kotlinx.android.synthetic.main.discussion_singlecard.view.discussion_post_title
+import kotlinx.android.synthetic.main.discussion_singlecard.view.discussion_post_username
+import kotlinx.android.synthetic.main.discussion_singlecard.view.profile_image
 
-class DiscussionCommentAdapter(val lifecycleOwner:LifecycleOwner, val discussions: List<DiscussionCommentData>):
-    RecyclerView.Adapter<DiscussionCommentAdapter.DiscussionViewHolder>() {
-
-    var databaseManager: DatabaseManager = DatabaseManager()
+class DiscussionCommentAdapter(val lifecycleOwner:LifecycleOwner, val discussions: List<DiscussionCommentData>,
+                               var databaseManager: DatabaseManager): RecyclerView.Adapter<DiscussionCommentAdapter.DiscussionViewHolder>() {
 
     class DiscussionViewHolder(val v1: View) : RecyclerView.ViewHolder(v1)
 
@@ -39,6 +43,19 @@ class DiscussionCommentAdapter(val lifecycleOwner:LifecycleOwner, val discussion
             holder.v1.discussion_post_title.text = discussions[position].text
             holder.v1.discussion_post_username.text = discussions[position].userName
             holder.v1.discussion_post_date.text = discussions[position].timeStamp
+            holder.v1.discussion_count.text = discussions[position].starredUsers.size.toString()
+            holder.v1.discussion_comment_star_image.isSelected = discussions[position].starredUsers.contains(discussions[position].userId)
+
+            holder.v1.discussion_comment_star_image.setOnClickListener(View.OnClickListener {
+                if(discussions[position].starredUsers.contains(discussions[position].userId)){
+                    databaseManager.removeDiscussionCount(discussions[position].id, discussions[position].userId)
+                    holder.v1.discussion_comment_star_image.isSelected = false
+                }
+                else{
+                    databaseManager.updateDiscussionCount(discussions[position].id, discussions[position].userId)
+                    holder.v1.discussion_comment_star_image.isSelected = true
+                }
+            })
 
         })
     }
